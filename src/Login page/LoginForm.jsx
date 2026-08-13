@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from "react";
 import "./UserForm.css";
 
-export default function UserForm({roleChecker}) {
+export default function UserForm({roleChecker, nameToParent}) {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
+  const[name, setName] = useState("");
 
   const[role, setRole] = useState("");
 
@@ -17,6 +18,7 @@ export default function UserForm({roleChecker}) {
     e.preventDefault();
     // alert(`Email: ${email}\nDOB: ${dob}\nGender: ${gender}\nRole: ${role}`);
     roleChecker(role);
+    nameToParent(name);
   };
 
   return (
@@ -47,6 +49,18 @@ export default function UserForm({roleChecker}) {
               Doctor
             </label>
           </div>
+        </div>
+
+        {/* Name */}
+        <div className="field">
+          <label htmlFor="name">Name</label>
+          <input 
+            type="text"
+            id="text"
+            placeholder="John Doe"
+            value={name}
+            onChange={(e)=>{setName(e.target.value)}}
+            required/>
         </div>
 
         {/* Email */}

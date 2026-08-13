@@ -12,7 +12,9 @@ function App() {
     setRole(i);
   };
 
-  let targetPage = <LoginForm roleChecker={roleChecker} />;
+  const [name, setName] = useState("");
+
+  let targetPage = <LoginForm roleChecker={roleChecker} nameToParent={setName}/>;
   if (role === "Doctor") {
     targetPage = <Navigate to="/doctor"/>;
   } else if (role === "Patient") {
