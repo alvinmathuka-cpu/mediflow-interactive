@@ -11,14 +11,20 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-export default function PatientPortal({name, currentDate}) {
+export default function PatientPortal({name}) {
   const [activeTab, setActiveTab] = useState("Health Hub");
+
+  let futureDate = new Date;
+  futureDate.setDate(futureDate.getDate() + 4);
+
+  futureDate = futureDate.toLocaleDateString();
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar Frame */}
       <aside className="sidebar">
         <div className="brand-header">
-          <h2>Equity AFYA</h2>
+          <h2>MEDIFLOW</h2>
           <span>Clinical OS</span>
         </div>
 
@@ -282,7 +288,7 @@ export default function PatientPortal({name, currentDate}) {
                   alignItems: "center",
                 }}
               >
-                <strong>October 18, 2024</strong>
+                <strong>{futureDate}</strong>
                 <span className="badge badge-confirmed">Confirmed</span>
               </div>
             </div>

@@ -19,7 +19,7 @@ function DoctorDashboard({name, currentDate}) {
       {/* Sidebar Frame */}
       <aside className="sidebar">
         <div className="brand-header">
-          <h2>EQUITY AFYA</h2>
+          <h2>MEDIFLOW</h2>
           <span>CLINICAL OS</span>
         </div>
         <ul className="nav-list">
