@@ -18,5 +18,9 @@ createRoot(document.getElementById("root")).render(
         <Route path="/patient" element={<PatientPortal />} />
       </Routes>
     </BrowserRouter>
+import LoginForm from "./Login page/LoginForm";
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <LoginForm />
   </StrictMode>,
 );

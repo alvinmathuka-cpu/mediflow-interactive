@@ -1,0 +1,194 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  background-image: url("../assets/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 320px;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    max-width: 90vw;
+    /* 1. Translucent background (75% opaque white) */
+  background-color: rgba(255, 255, 255, 0.2);
+
+  /* 2. Frosted glass blur effect over the background image */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* 3. Subtle translucent border for depth */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  /* 4. Soft shadow to make the form pop against the image */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+  }
+  .card div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card div div {
+    flex-direction: row;
+    gap: 6px;
+  }
+  /* forcing out the radio input */
+  .radio-options input[type="radio"] {
+    display: none;
+  }
+  .radio-options label {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent;
+  }
+  /* color */
+  .radio-options label.Doctor {
+    background-color: #e6f4f1;
+    color: #2c7a7b;
+    border-color: #cbd5e0;
+  }
+  .radio-options label.Doctor:has(input:checked) {
+    background-color: #b2f5ea;
+    border-color: #319795;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+  .radio-options label.Patient {
+    background-color: #fff5ea;
+    color: #c05621;
+    border-color: #cbd5e0;
+  }
+  .radio-options label.Patient:has(input:checked) {
+    background-color: #feebc8;
+    border-color: #dd6b20;
+    box-shadow: 0 2px 4px rgba(0, 0, 0.08);
+  }
+  .radio-options label.Gender {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1.5px solid #e2e8f0;
+  }
+  .Gender:hover,
+  label.Gender:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+  }
+  /* selected state button color */
+  .Gender:has(input:checked),
+  label.Gender:has(input:checked) {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: #38bdf8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  /* Base input styling for text, email, password, etc. */
+  .field input[type="date"],
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="password"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    border-radius: 10px;
+
+    /* Translucent input background */
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(203, 213, 225, 0.6);
+    color: #334155;
+    font-size: 14px;
+    outline: none;
+
+    /* Smooth focus transitions */
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* Glassy glow on input focus */
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: #38bdf8;
+
+    /* Soft cyan/teal medical glass glow */
+    box-shadow:
+      0 0 0 4px rgba(56, 189, 248, 0.18),
+      0 4px 12px rgba(56, 189, 248, 0.1);
+  }
+
+  /* Translucent hover & focus glow for Doctor/Patient/Gender button options */
+  .radio-options label:hover,
+  .geder:hover,
+  label.geder:hover {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Focus outline for keyboard navigation on hidden radio labels */
+  .radio-options label:has(input:focus-visible),
+  .geder:has(input:focus-visible) {
+    outline: 2px solid #0284c7;
+    outline-offset: 2px;
+    box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+
+    /* MDN oklch(Lightness, Chroma/Saturation, Hue) */
+    /* Deep Chalky Teal: Low chroma (0.08) creates a soft chalk texture */
+    background: rgba(18, 100, 90, 0.85); /* Fallback */
+    background: oklch(52% 0.08 190 / 0.88);
+
+    color: #ffffff;
+    border: 1px solid oklch(85% 0.03 190 / 0.5);
+
+    /* Glassmorphism Blur */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    box-shadow:
+      0 4px 14px 0 oklch(40% 0.06 190 / 0.25),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+
+    transition: all 0.25s ease-in-out;
+  }
+
+  /* Hover State - Slightly Lifted Chalk Saturation */
+  .submit-btn:hover {
+    background: oklch(
+      58% 0.11 190 / 0.95
+    ); /* Brightened slightly while remaining chalky */
+    box-shadow:
+      0 6px 20px 0 oklch(50% 0.08 190 / 0.35),
+      0 0 12px oklch(75% 0.09 190 / 0.4);
+    transform: translateY(-1px);
+  }
+
+  .submit-btn:active {
+    transform: translateY(1px);
+    background: oklch(48% 0.08 190 / 0.95);
+  }
+}
