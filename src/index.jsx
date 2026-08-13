@@ -21,6 +21,8 @@ function App() {
     targetPage = <Navigate to="/patient"/>;
   }
 
+  let currentDate = (new Date).toLocaleDateString();
+
   return (
     <>
       <BrowserRouter>
@@ -31,8 +33,8 @@ function App() {
 
           {}
           {/* Main Routes */}
-          <Route path="/doctor" element={<DoctorDashboard name={name}/>} />
-          <Route path="/patient" element={<PatientPortal name={name}/>} />
+          <Route path="/doctor" element={<DoctorDashboard name={name} currentDate={currentDate}/>} />
+          <Route path="/patient" element={<PatientPortal name={name} currentDate={currentDate}/>} />
         </Routes>
       </BrowserRouter>
     </>

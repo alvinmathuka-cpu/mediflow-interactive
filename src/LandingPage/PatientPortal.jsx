@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-export default function PatientPortal({name}) {
+export default function PatientPortal({name, currentDate}) {
   const [activeTab, setActiveTab] = useState("Health Hub");
   return (
     <div className="dashboard-layout">

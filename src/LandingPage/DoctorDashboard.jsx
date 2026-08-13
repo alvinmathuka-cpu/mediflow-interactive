@@ -12,7 +12,7 @@ import {
 import "./Dashboard.css";
 import { NavLink } from "react-router-dom";
 
-function DoctorDashboard({name}) {
+function DoctorDashboard({name, currentDate}) {
   const [activeTab, setActiveTab] = useState("Overview");
   return (
     <div className="dashboard-layout">
@@ -97,7 +97,7 @@ function DoctorDashboard({name}) {
             <p>System Overview for Cardiology Clinic & ICU Units</p>
           </div>
           <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
-            Today: Oct 11, 2024
+            Today: {currentDate}
           </span>
         </div>
 
