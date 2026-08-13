@@ -31,7 +31,7 @@ function App() {
 
           {}
           {/* Main Routes */}
-          <Route path="/doctor" element={<DoctorDashboard />} />
+          <Route path="/doctor" element={<DoctorDashboard name={name}/>} />
           <Route path="/patient" element={<PatientPortal />} />
         </Routes>
       </BrowserRouter>
