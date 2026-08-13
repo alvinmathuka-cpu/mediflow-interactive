@@ -11,14 +11,20 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-export default function PatientPortal() {
+export default function PatientPortal({name}) {
   const [activeTab, setActiveTab] = useState("Health Hub");
+
+  let futureDate = new Date;
+  futureDate.setDate(futureDate.getDate() + 4);
+
+  futureDate = futureDate.toLocaleDateString();
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar Frame */}
       <aside className="sidebar">
         <div className="brand-header">
-          <h2>Equity AFYA</h2>
+          <h2>MEDIFLOW</h2>
           <span>Clinical OS</span>
         </div>
 
@@ -82,10 +88,10 @@ export default function PatientPortal() {
         </ul>
 
         <div className="user-profile-bottom">
-          <div className="avatar-circle">AO</div>
+          <div className="avatar-circle">{name[0]}</div>
           <div>
             <p style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-              Amara Okereke
+              {name}
             </p>
             <p style={{ fontSize: "0.75rem", color: "#64748b" }}>
               MRN: #284-092-04
@@ -99,7 +105,7 @@ export default function PatientPortal() {
         {/* Teal Header Banner */}
         <div className="welcome-banner teal">
           <div>
-            <h1>Hello, Amara Okereke</h1>
+            <h1>Hello, {name}</h1>
             <p>
               Your recovery is on track. Remember to log your morning vitals
               before 10:00 AM today.
@@ -282,7 +288,7 @@ export default function PatientPortal() {
                   alignItems: "center",
                 }}
               >
-                <strong>October 18, 2024</strong>
+                <strong>{futureDate}</strong>
                 <span className="badge badge-confirmed">Confirmed</span>
               </div>
             </div>

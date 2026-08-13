@@ -12,14 +12,14 @@ import {
 import "./Dashboard.css";
 import { NavLink } from "react-router-dom";
 
-function DoctorDashboard() {
+function DoctorDashboard({name, currentDate}) {
   const [activeTab, setActiveTab] = useState("Overview");
   return (
     <div className="dashboard-layout">
       {/* Sidebar Frame */}
       <aside className="sidebar">
         <div className="brand-header">
-          <h2>EQUITY AFYA</h2>
+          <h2>MEDIFLOW</h2>
           <span>CLINICAL OS</span>
         </div>
         <ul className="nav-list">
@@ -79,10 +79,10 @@ function DoctorDashboard() {
           </NavLink>
         </ul>
         <div className="user-profile-bottom">
-          <div className="avatar-circle">LW</div>
+          <div className="avatar-circle">{name[0]}</div>
           <div>
             <p style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-              Dr. Lucky Wekesa
+              Dr. {name}
             </p>
             <p style={{ fontSize: "0.75rem", color: "#64748b" }}>Cardiology</p>
           </div>
@@ -93,11 +93,11 @@ function DoctorDashboard() {
       <main className="main-content">
         <div className="welcome-banner">
           <div>
-            <h1>Welcome Back, Dr. Sarah Jenkins</h1>
+            <h1>Welcome Back, Dr. {name}</h1>
             <p>System Overview for Cardiology Clinic & ICU Units</p>
           </div>
           <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
-            Today: Oct 11, 2024
+            Today: {currentDate}
           </span>
         </div>
 
