@@ -1,15 +1,22 @@
 /* Structure Skeleton For the login page outlook */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UserForm.css";
 
-export default function UserForm() {
+export default function UserForm({roleChecker}) {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
 
+  const[role, setRole] = useState("");
+
+  useEffect(()=>{
+    console.log(role);
+  }, [role]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Email: ${email}\nDOB: ${dob}\nGender: ${gender}`);
+    // alert(`Email: ${email}\nDOB: ${dob}\nGender: ${gender}\nRole: ${role}`);
+    roleChecker(role);
   };
 
   return (
@@ -24,11 +31,11 @@ export default function UserForm() {
               <input
                 type="radio"
                 name="role"
-                value="patient"
+                value="Patient"
                 onChange={(e) => setRole(e.target.value)}
                 required
               />
-              patient
+              Patient
             </label>
             <label className="Doctor">
               <input
