@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -14,6 +14,13 @@ import { NavLink } from "react-router-dom";
 
 function DoctorDashboard({name, currentDate}) {
   const [activeTab, setActiveTab] = useState("Overview");
+  const doctorName = name || "Doctor";
+  const showOverview = activeTab === "Overview";
+  const showPatients = showOverview || activeTab === "My Patients";
+  const showSchedule = showOverview || activeTab === "OR Schedule";
+  const showIcu = showOverview || activeTab === "ICU Monitor";
+  const showAnalytics = showOverview || activeTab === "Analytics";
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar Frame */}
@@ -79,10 +86,10 @@ function DoctorDashboard({name, currentDate}) {
           </NavLink>
         </ul>
         <div className="user-profile-bottom">
-          <div className="avatar-circle">{name[0]}</div>
+          <div className="avatar-circle">{doctorName[0]}</div>
           <div>
             <p style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-              Dr. {name}
+              Dr. {doctorName}
             </p>
             <p style={{ fontSize: "0.75rem", color: "#64748b" }}>Cardiology</p>
           </div>
@@ -93,7 +100,7 @@ function DoctorDashboard({name, currentDate}) {
       <main className="main-content">
         <div className="welcome-banner">
           <div>
-            <h1>Welcome Back, Dr. {name}</h1>
+            <h1>Welcome Back, Dr. {doctorName}</h1>
             <p>System Overview for Cardiology Clinic & ICU Units</p>
           </div>
           <span style={{ fontSize: "0.85rem", color: "#64748b" }}>
@@ -102,7 +109,7 @@ function DoctorDashboard({name, currentDate}) {
         </div>
 
         {/* Top Metrics Row */}
-        <div className="metrics-grid">
+        {showAnalytics && <div className="metrics-grid">
           <div className="metric-card">
             <span style={{ color: "#0d9488", fontSize: "1.5rem" }}>●</span>
             <div>
@@ -124,13 +131,13 @@ function DoctorDashboard({name, currentDate}) {
               <div className="count">5</div>
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* Two Column Layout Split */}
         <div className="dashboard-split">
           {/* Left Column */}
           <div>
-            <div className="card">
+            {showPatients && <div className="card">
               <div className="card-header">
                 <span className="card-title">Patient Treatment History</span>
                 <a
@@ -194,9 +201,9 @@ function DoctorDashboard({name, currentDate}) {
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div>}
 
-            <div className="card">
+            {showSchedule && <div className="card">
               <div className="card-header">
                 <span className="card-title">Operating Theater Status</span>
                 <span style={{ fontSize: "0.8rem", color: "#64748b" }}>
@@ -247,12 +254,12 @@ function DoctorDashboard({name, currentDate}) {
                   <span className="badge badge-discharged">AVAILABLE</span>
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
 
           {/* Right Column */}
           <div>
-            <div className="card">
+            {showIcu && <div className="card">
               <div className="card-header">
                 <span className="card-title">ICU Bed Availability</span>
               </div>
@@ -309,9 +316,9 @@ function DoctorDashboard({name, currentDate}) {
                   Vacant
                 </div>
               </div>
-            </div>
+            </div>}
 
-            <div className="card">
+            {showIcu && <div className="card">
               <span className="card-title">On-Call Actions</span>
               <div
                 style={{
@@ -348,7 +355,7 @@ function DoctorDashboard({name, currentDate}) {
                   <span>Physicians</span>
                 </button>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </main>
