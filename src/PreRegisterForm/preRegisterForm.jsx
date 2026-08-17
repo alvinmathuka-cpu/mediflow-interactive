@@ -19,6 +19,7 @@ export default function PreRegisterForm({ onClose, onSuccess }) {
   const [emergencyContactName, setEmergencyContactName] = useState('');
   const [emergencyContactPhone, setEmergencyContactPhone] = useState('');
 
+  {/* Handling form submission */}
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -51,6 +52,7 @@ export default function PreRegisterForm({ onClose, onSuccess }) {
         emergency_contact_phone: emergencyContactPhone,
       });
 
+      {/* Call onSuccess callback */}
       if (onSuccess) onSuccess(newPatient);
       if (onClose) onClose();
     } catch (err) {
@@ -59,7 +61,7 @@ export default function PreRegisterForm({ onClose, onSuccess }) {
       setLoading(false);
     }
   };
-
+{/* Rendering the pre-registration form */}
   return (
     <div className="pre-register-overlay">
       <div className="pre-register-modal">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Dashboard.css";
 import {
   Calendar,
@@ -11,10 +11,41 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import PreRegisterForm from "../PreRegisterForm/preRegisterForm";
+import { useMediflowData } from "../context/DataContext";
 
 export default function PatientPortal({name}) {
   const [activeTab, setActiveTab] = useState("Health Hub");
   const [showPreRegisterForm, setShowPreRegisterForm] = useState(false);
+  const { db, patientService, notificationService } = useMediflowData();
+  const loginName = name || "";
+  const patients = db.patients.getAll();
+  const patient = patients.find((p) => `${p.first_name} ${p.last_name}`.toLowerCase() === loginName.toLowerCase()) || patients[0];
+  const profile = patient ? patientService.getPatientProfile(patient.patient_id) : null;
+  const appointments = profile?.upcomingAppointments.slice(0, 2) || [];
+  const prescriptions = profile?.activePrescriptions.slice(0, 3) || [];
+  const notifications = patient ? notificationService.getForUser(patient.user_id).slice(0, 3) : [];
+  const patientName = loginName || (patient ? `${patient.first_name} ${patient.last_name}` : "Patient");
+  const showHub = activeTab === "Health Hub";
+  const showAppointments = showHub || activeTab === "Appointments";
+  const showRecords = showHub || activeTab === "My Records";
+  const showMessages = showHub || activeTab === "Messages";
+  const showBilling = showHub || activeTab === "Billing & Insurance";
+
+  const formatDate = (date) => new Date(date).toLocaleDateString();
+  const getStaffName = (staffId) => {
+    const staff = db.staff.getById(staffId);
+    return staff ? `Dr. ${staff.first_name} ${staff.last_name}` : "Care Team";
+  };
+  const getRoomName = (roomId) => {
+    const room = db.rooms.getById(roomId);
+    return room ? `ROOM ${room.room_number}` : "Room TBC";
+  };
+  const getPrescriptionItems = (prescriptionId) => {
+    return db.prescriptionItems.findBy("prescription_id", prescriptionId);
+  };
+  const getDrugName = (drugId) => {
+    return db.drugs.getById(drugId)?.name || "Medication";
+  };
 
   let futureDate = new Date;
   futureDate.setDate(futureDate.getDate() + 4);
@@ -90,13 +121,13 @@ export default function PatientPortal({name}) {
         </ul>
 
         <div className="user-profile-bottom">
-          <div className="avatar-circle">{name[0]}</div>
+          <div className="avatar-circle">{patientName[0]}</div>
           <div>
             <p style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-              {name}
+              {patientName}
             </p>
             <p style={{ fontSize: "0.75rem", color: "#64748b" }}>
-              MRN: #284-092-04
+              MRN: #{patient?.patient_id || "284-092-04"}
             </p>
           </div>
         </div>
@@ -107,7 +138,7 @@ export default function PatientPortal({name}) {
         {/* Teal Header Banner */}
         <div className="welcome-banner teal">
           <div>
-            <h1>Hello, {name}</h1>
+            <h1>Hello, {patientName}</h1>
             <p>
               Your recovery is on track. Remember to log your morning vitals
               before 10:00 AM today.
@@ -124,12 +155,13 @@ export default function PatientPortal({name}) {
         <div className="dashboard-split">
           {/* Main Left Section */}
           <div>
-            <div className="card">
+            {showAppointments && <div className="card">
               <div className="card-header">
                 <span className="card-title">Scheduled Medical Visits</span>
               </div>
               <div className="doctor-card-grid">
-                <div className="doctor-card">
+                {appointments.map((appointment) => (
+                <div className="doctor-card" key={appointment.appointment_id}>
                   <div
                     style={{
                       display: "flex",
@@ -138,17 +170,17 @@ export default function PatientPortal({name}) {
                       marginBottom: "0.75rem",
                     }}
                   >
-                    <div className="avatar-circle">SJ</div>
+                    <div className="avatar-circle">{getStaffName(appointment.staff_id).split(" ").map((part) => part[0]).join("").slice(0, 2)}</div>
                     <div>
-                      <strong>Dr. Sarah Jenkins</strong>
+                      <strong>{getStaffName(appointment.staff_id)}</strong>
                       <p style={{ fontSize: "0.75rem", color: "#64748b" }}>
-                        Cardiology & Vascular
+                        {appointment.department}
                       </p>
                     </div>
                   </div>
                   <p style={{ fontSize: "0.8rem", color: "#64748b" }}>
                     <Calendar size={18} />
-                    <span>Calendar</span>
+                    <span>{formatDate(appointment.scheduled_datetime)} - {appointment.purpose}</span>
                   </p>
                   <p
                     style={{
@@ -158,7 +190,7 @@ export default function PatientPortal({name}) {
                     }}
                   >
                     <Hospital size={18} />
-                    <span>ROOM 94 block C</span>
+                    <span>{getRoomName(appointment.room_id)}</span>
                   </p>
                   <button
                     type="button"
@@ -175,55 +207,9 @@ export default function PatientPortal({name}) {
                     Pre-Register Form
                   </button>
                 </div>
-
-                <div className="doctor-card">
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.75rem",
-                      alignItems: "center",
-                      marginBottom: "0.75rem",
-                    }}
-                  >
-                    <div className="avatar-circle">AV</div>
-                    <div>
-                      <strong>Dr. Aris Vance</strong>
-                      <p style={{ fontSize: "0.75rem", color: "#64748b" }}>
-                        General Endocrinology
-                      </p>
-                    </div>
-                  </div>
-                  <p style={{ fontSize: "0.8rem", color: "#64748b" }}>
-                    <Calendar size={18} />
-                    <span>Calendar</span>
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "#64748b",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    <Hospital size={18} />
-                    <span>ROOM 103 block A</span>
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setShowPreRegisterForm(true)}
-                    style={{
-                      width: "100%",
-                      padding: "0.4rem",
-                      background: "#f1f5f9",
-                      border: "none",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Pre-Register Form
-                  </button>
-                </div>
+                ))}
               </div>
-            </div>
+            </div>}
 
             {showPreRegisterForm && (
               <PreRegisterForm
@@ -232,7 +218,7 @@ export default function PatientPortal({name}) {
               />
             )}
 
-            <div className="card">
+            {showRecords && <div className="card">
               <span className="card-title">Recent Care Activity</span>
               <ul
                 style={{
@@ -243,36 +229,41 @@ export default function PatientPortal({name}) {
                   gap: "1rem",
                 }}
               >
+                {prescriptions.map((prescription) => (
                 <li
+                  key={prescription.prescription_id}
                   style={{
                     paddingBottom: "0.75rem",
                     borderBottom: "1px solid #e2e8f0",
                   }}
                 >
-                  <strong>Lab Results Released</strong>
+                  <strong>{prescription.diagnosis}</strong>
                   <p style={{ fontSize: "0.8rem", color: "#64748b" }}>
-                    Comprehensive Metabolic Panel - All values within normal
-                    baseline ranges.
+                    {getPrescriptionItems(prescription.prescription_id).map((item) => getDrugName(item.drug_id)).join(", ") || prescription.notes}
                   </p>
                 </li>
+                ))}
+                {showMessages && notifications.map((notification) => (
                 <li
+                  key={notification.notification_id}
                   style={{
                     paddingBottom: "0.75rem",
                     borderBottom: "1px solid #e2e8f0",
                   }}
                 >
-                  <strong>Prescription Refilled</strong>
+                  <strong>{notification.type.replace("_", " ")}</strong>
                   <p style={{ fontSize: "0.8rem", color: "#64748b" }}>
-                    Lisinopril 10mg - Available for pickup at Aegis Pharmacy.
+                    {notification.message}
                   </p>
                 </li>
+                ))}
               </ul>
-            </div>
+            </div>}
           </div>
 
           {/* Right Sidebar Section */}
           <div>
-            <div
+            {showAppointments && <div
               className="card"
               style={{ background: "#fffbe1", borderColor: "#fef08a" }}
             >
@@ -283,7 +274,7 @@ export default function PatientPortal({name}) {
                 Upcoming Procedure
               </span>
               <h3 style={{ marginTop: "0.5rem", fontSize: "1.1rem" }}>
-                Diagnostic Cardiac Catheterization
+                {appointments[0]?.purpose || "Diagnostic Cardiac Catheterization"}
               </h3>
               <p
                 style={{
@@ -292,7 +283,7 @@ export default function PatientPortal({name}) {
                   color: "#854d0e",
                 }}
               >
-                Surgeon: Dr. Sarah Jenkins
+                Clinician: {appointments[0] ? getStaffName(appointments[0].staff_id) : "Dr. Sarah Jenkins"}
               </p>
               <div
                 style={{
@@ -301,12 +292,12 @@ export default function PatientPortal({name}) {
                   alignItems: "center",
                 }}
               >
-                <strong>{futureDate}</strong>
+                <strong>{appointments[0] ? formatDate(appointments[0].scheduled_datetime) : futureDate}</strong>
                 <span className="badge badge-confirmed">Confirmed</span>
               </div>
-            </div>
+            </div>}
 
-            <div className="card">
+            {showBilling && <div className="card">
               <span className="card-title">Need Assistance?</span>
               <p
                 style={{
@@ -332,7 +323,7 @@ export default function PatientPortal({name}) {
                 <br />
                 North Pavilion, Entrance 2
               </p>
-            </div>
+            </div>}
           </div>
         </div>
       </main>
